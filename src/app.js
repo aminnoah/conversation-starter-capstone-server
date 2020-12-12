@@ -8,6 +8,12 @@ const {
 } = require('./config');
 const errorHandler = require('./middleware/error-handler');
 
+const authRouter = require("./auth/auth-router") 
+const usersRouter = require("./users/users-router") 
+ 
+const convosRouter = require("./convo/convos-router") 
+
+
 const app = express();
 
 const morganOption = (NODE_ENV === 'production') ?
@@ -20,9 +26,16 @@ app.use(morgan(morganOption, {
 app.use(cors());
 app.use(helmet());
 
-app.use(express.static('public'));
+//Load user login router
+app.use("/api/auth", authRouter) 
 
-app.use();
+//Load user registration router
+app.use("/api/users", usersRouter) 
+
+app.use('/api/convos', convosRouter)
+
+
+
 app.use(errorHandler);
 
 module.exports = app;

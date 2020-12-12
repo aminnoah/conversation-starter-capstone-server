@@ -1,4 +1,4 @@
-INSERT INTO questions (id, user_id, question, is_favorited, is_public, min_number_of_people, ok_for_entertainment, ok_for_exercise, ok_for_exercise, ok_for_technology, ok_for_fashion, ok_for_holidays, ok_for_education, ok_for_work, ok_for_food, ok_for_leisure)
+INSERT INTO convos (id, user_id, question, is_favorited, is_public, min_number_of_people, ok_for_entertainment, ok_for_exercise, ok_for_exercise, ok_for_technology, ok_for_fashion, ok_for_holidays, ok_for_education, ok_for_work, ok_for_food, ok_for_leisure)
 SELECT user_id
 FROM users
 VALUES 
@@ -61,6 +61,6 @@ VALUES
 
 
 
-/* 
-Command to 
-psql -U dunder_mifflin -d blogful -f ./seeds/seed.blogful_articles.sql*/
+-- /* 
+-- Command to 
+-- psql -U dunder_mifflin -d blogful -f ./seeds/seed.blogful_articles.sql*/

@@ -1,0 +1,4 @@
+DROP TABLE IF EXISTS convos;
+
+DROP TABLE IF EXISTS users;
+

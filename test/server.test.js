@@ -1,3 +1,6 @@
+/* global expect*/
+'use strict';
+
 const knex = require('knex');
 const app = require('../src/app');
 const supertest = require('supertest');
@@ -14,7 +17,7 @@ describe('questions API:', function() {
   before('make knex instance', () => {
     db = knex({
       client: 'pg',
-      connection: process.env.TEST_DB_URL,
+      connection: process.env.DATABASE_URL,
     });
     app.set('db', db);
   });
@@ -88,7 +91,7 @@ describe('questions API:', function() {
     //relevant
     it('should create and return a new question when provided valid data', function() {
       const newItem = {
-          'question': 'Who\'s your momma?'
+        'question': 'Who\'s your momma?'
       };
 
       return supertest(app)
