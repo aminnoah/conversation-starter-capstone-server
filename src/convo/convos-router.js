@@ -35,7 +35,7 @@ convosRouter
 
     //connect to the service to get the data
     ConvosService.getConvos(req.app.get('db'))
-      .then(convoss => {
+      .then(convos => {
         //map the results to get each one of the objects and serialize them
         res.json(convos.map(serializeConvos));
       })
@@ -82,11 +82,11 @@ convosRouter
 
     //validate the input
     for (const [key, value] of Object.entries(newConvos)) {
-      if (value == null) {
+      if (question == null) {
         //if there is an error show it
         return res.status(400).json({
           error: {
-            message: `Missing '${key}' in request body`
+            message: `Missing a question in request body`
           }
         });
       }
@@ -192,7 +192,7 @@ convosRouter
       //if there is an error show it
       return res.status(400).json({
         error: {
-          message: 'Request body must content either \'title\' or \'completed\''
+          message: 'Request body must content either \'user_id\' or \'question\''
         }
       });
     }
@@ -211,12 +211,13 @@ convosRouter
       .catch(next);
   })
 //relevant
-  .delete((req, res, next) => {
+  .delete((req, res, next) => {    
     ConvosService.deleteConvos(
       req.app.get('db'),
       req.params.convos_id
     )
-      .then(numRowsAffected => {
+    
+    .then(numRowsAffected => {
 
         //check how many rows are effected to figure out if the delete was successful
         res.status(204).json(numRowsAffected).end();
@@ -224,5 +225,46 @@ convosRouter
       .catch(next);
   });
 
+
+
+
+
+  convosRouter
+  .route('/by-user-end-list-type/:user_id/:event_list')
+  .all((req, res, next) => {
+    if (isNaN(parseInt(req.params.user_id))) {
+      //if there is an error show it
+      return res.status(404).json({
+        error: {
+          message: 'Invalid id'
+        }
+      });
+    }
+
+    //connect to the service to get the data
+    ConvosService.getConvosByUserIdAndEventList(
+      req.app.get('db'),
+      req.params.user_id,
+      req.params.event_list
+    )
+      .then(convos => {
+        if (!convos) {
+          //if there is an error show it
+          return res.status(404).json({
+            error: {
+              message: 'Convos doesn\'t exist'
+            }
+          });
+        }
+        res.convos = convos;
+        next();
+      })
+      .catch(next);
+  })
+  .get((req, res, next) => {
+
+    //get each one of the objects from the results and serialize them
+    res.json(res.convos);
+  })
 
 module.exports = convosRouter;
