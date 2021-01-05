@@ -125,7 +125,7 @@ getConvosByUserIdAndEventList(db, user_id, event_list) {
     },
   //relevant
   insertConvos(db, newConvos) {
-    //console.log(newConvos)
+ 
       return db
           .insert(newConvos)
           .into('convos')
