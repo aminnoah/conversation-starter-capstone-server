@@ -29,8 +29,10 @@ getConvosByUserIdAndEventList(db, user_id, event_list) {
             .select('*')
             .from('convos')
             .where({
-              'is_public': true,
-                'ok_for_fashion': true
+              'ok_for_fashion': true
+            })
+            .andWhere(function() {
+              this.where('is_public', true).orWhere('user_id', user_id) 
             })
     }
     if(event_list == 'work') {
@@ -38,8 +40,10 @@ getConvosByUserIdAndEventList(db, user_id, event_list) {
             .select('*')
             .from('convos')
             .where({
-                'is_public': true,
-                'ok_for_work': true
+              'ok_for_work': true
+            })
+            .andWhere(function() {
+              this.where('is_public', true).orWhere('user_id', user_id) 
             })
     }
     if(event_list == 'entertainment') {
@@ -47,8 +51,10 @@ getConvosByUserIdAndEventList(db, user_id, event_list) {
             .select('*')
             .from('convos')
             .where({
-                'is_public': true,
-                'ok_for_entertainment': true
+              'ok_for_entertainment': true
+            })
+            .andWhere(function() {
+              this.where('is_public', true).orWhere('user_id', user_id) 
             })
     }
     if(event_list == 'exercise') {
@@ -56,8 +62,10 @@ getConvosByUserIdAndEventList(db, user_id, event_list) {
             .select('*')
             .from('convos')
             .where({
-                'is_public': true,
-                'ok_for_exercise': true
+              'ok_for_exercise': true
+            })
+            .andWhere(function() {
+              this.where('is_public', true).orWhere('user_id', user_id) 
             })
     }
     if(event_list == 'travel') {
@@ -65,8 +73,10 @@ getConvosByUserIdAndEventList(db, user_id, event_list) {
             .select('*')
             .from('convos')
             .where({
-                'is_public': true,
-                'ok_for_travel': true
+              'ok_for_travel': true
+            })
+            .andWhere(function() {
+              this.where('is_public', true).orWhere('user_id', user_id) 
             })
     }
     if(event_list == 'technology') {
@@ -74,8 +84,10 @@ getConvosByUserIdAndEventList(db, user_id, event_list) {
             .select('*')
             .from('convos')
             .where({
-                'is_public': true,
-                'ok_for_technology': true
+              'ok_for_technology': true
+            })
+            .andWhere(function() {
+              this.where('is_public', true).orWhere('user_id', user_id) 
             })
     }
     if(event_list == 'holidays') {
@@ -83,8 +95,10 @@ getConvosByUserIdAndEventList(db, user_id, event_list) {
             .select('*')
             .from('convos')
             .where({
-                'is_public': true,
-                'ok_for_holidays': true
+              'ok_for_holidays': true
+            })
+            .andWhere(function() {
+              this.where('is_public', true).orWhere('user_id', user_id) 
             })
     }
     if(event_list == 'education') {
@@ -92,8 +106,10 @@ getConvosByUserIdAndEventList(db, user_id, event_list) {
             .select('*')
             .from('convos')
             .where({
-                'is_public': true,
-                'ok_for_education': true
+              'ok_for_education': true
+            })
+            .andWhere(function() {
+              this.where('is_public', true).orWhere('user_id', user_id) 
             })
     }
     if(event_list == 'food') {
@@ -101,8 +117,10 @@ getConvosByUserIdAndEventList(db, user_id, event_list) {
             .select('*')
             .from('convos')
             .where({
-                'is_public': true,
-                'ok_for_food': true
+              'ok_for_food': true
+            })
+            .andWhere(function() {
+              this.where('is_public', true).orWhere('user_id', user_id) 
             })
     }
     if(event_list == 'leisure') {
@@ -110,18 +128,20 @@ getConvosByUserIdAndEventList(db, user_id, event_list) {
             .select('*')
             .from('convos')
             .where({
-                'is_public': true,
-                'ok_for_leisure': true
+              'ok_for_leisure': true
+            })
+            .andWhere(function() {
+              this.where('is_public', true).orWhere('user_id', user_id) 
             })
     }
-    if(is_public == false) {
-      return db
-        .select('*')
-        .from('convos')
-        .where({
-          'is_public': false
-        })
-    }
+    // if(is_public == false) {
+    //   return db
+    //     .select('*')
+    //     .from('convos')
+    //     .where({
+    //       'is_public': false
+    //     })
+    // }
     },
   //relevant
   insertConvos(db, newConvos) {

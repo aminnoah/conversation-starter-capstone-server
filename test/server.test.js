@@ -6,7 +6,7 @@ const app = require('../src/app');
 const supertest = require('supertest');
 
 
-describe('questions API:', function() {
+describe('convos API:', function() {
   let db;
   let questions = [
     { 'question': 'What do you do?' },
@@ -22,29 +22,29 @@ describe('questions API:', function() {
     app.set('db', db);
   });
 
-  before('cleanup', () => db.raw('TRUNCATE TABLE test-questions RESTART IDENTITY;'));
+  before('cleanup', () => db.raw('TRUNCATE TABLE convos RESTART IDENTITY;'));
 
-  afterEach('cleanup', () => db.raw('TRUNCATE TABLE test-questions RESTART IDENTITY;'));
+  afterEach('cleanup', () => db.raw('TRUNCATE TABLE convos RESTART IDENTITY;'));
 
   after('disconnect from the database', () => db.destroy());
 
   describe('GET all questions', () => {
 
     beforeEach('insert some questions', () => {
-      return db('test-questions').insert(questions);
+      return db('convos').insert(questions);
     });
 
     //relevant
-    it('should respond to GET `/api/questions` with an array of questions and status 200', function() {
+    it('should respond to GET `/api/convos` with an array of questions and status 200', function() {
       return supertest(app)
-        .get('/api/questions')
+        .get('/api/convos')
         .expect(200)
         .expect(res => {
           expect(res.body).to.be.a('array');
           expect(res.body).to.have.length(questions.length);
           res.body.forEach((item) => {
             expect(item).to.be.a('object');
-            expect(item).to.include.keys('id', 'title', 'completed');
+            expect(item).to.include.keys('id', 'question', 'user_id');
           });
         });
     });

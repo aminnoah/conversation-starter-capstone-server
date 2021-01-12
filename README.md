@@ -102,7 +102,23 @@ Login Page
 
 ## 8. API Documentation 
 API Documentation details:
-* (Example) get all users
+* ## 8. API Documentation 
+/api
+├── /auth    
+│   └── POST
+│       ├── /login
+├── /users
+│   └── GET /
+│   └── GET /:id
+├── /convos
+│   └── GET
+│       ├── /
+│       ├── /:convo_id
+│   └── POST
+│       ├── /:convo_id
+├── /convosbyuserid
+│   └── GET
+│       ├── /convo/:user_id
 
 
 
@@ -110,7 +126,7 @@ API Documentation details:
 
 ## Development Roadmap 
 This is v1.0 of the app, but future enhancements are expected to include:
-* (Example) add more functionality
+*add more functionality
 
 ## How to run it 
 Use command line to navigate into the project folder and run the following in terminal
