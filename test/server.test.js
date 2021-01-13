@@ -54,8 +54,8 @@ describe('convos API:', function() {
 
   describe('GET questions by id', () => {
 
-    beforeEach('insert some questions', () => {
-      return db('questions').insert(questions);
+    beforeEach('insert some convos', () => {
+      return db('convos').insert(convos);
     });
 
     it('should return correct questions when given an id', () => {
@@ -65,45 +65,47 @@ describe('convos API:', function() {
         .then(_doc => {
           doc = _doc;
           return supertest(app)
-            .get(`/api/questions/${doc.id}`)
+            .get(`/api/convos/${doc.id}`)
             .expect(200);
         })
         .then(res => {
           expect(res.body).to.be.an('object');
           expect(res.body).to.include.keys('question');
           expect(res.body.id).to.equal(doc.id);
-          expect(res.body.title).to.equal(doc.title);
-          expect(res.body.completed).to.equal(doc.completed);
         });
     });
 
     it('should respond with a 404 when given an invalid id', () => {
       return supertest(app)
-        .get('/api/questions/aaaaaaaaaaaa')
+        .get('/api/convos/aaaaaaaaaaaa')
         .expect(404);
     });
 
   });
 
 
-  describe('POST (create) new question', function() {
+  describe('POST (create) new convo', function() {
 
     //relevant
     it('should create and return a new question when provided valid data', function() {
       const newItem = {
-        'question': 'Who\'s your momma?'
+        'id': '1',
+        'user_id': '1',
+        'question': 'Who\'s your momma?',
+        'min_number_of_people': 3
       };
 
       return supertest(app)
-        .post('/api/questions')
+        .post('/api/convos')
         .send(newItem)
         .expect(201)
         .expect(res => {
           expect(res.body).to.be.a('object');
-          expect(res.body).to.include.keys('id', 'title', 'completed');
-          expect(res.body.title).to.equal(newItem.title);
-          expect(res.body.completed).to.be.false;
-          expect(res.headers.location).to.equal(`/api/questions/${res.body.id}`);
+          expect(res.body).to.include.keys('id', 'user_id', 'question', 'min_number_of_people');
+          expect(res.body.id).to.equal(newItem.id);
+          expect(res.body.user_id).to.equal(newItem.user_id);
+          expect(res.header.question).to.equal(`/api/convos/${res.body.id}`);
+          expect(res.body.min_number_of_people).to.equal(newItem.min_number_of_people);
         });
     });
 
@@ -112,7 +114,7 @@ describe('convos API:', function() {
         foobar: 'broken item'
       };
       return supertest(app)
-        .post('/api/questions')
+        .post('/api/convos')
         .send(badItem)
         .expect(400);
     });
@@ -123,30 +125,33 @@ describe('convos API:', function() {
   describe('PATCH (update) questions by id', () => {
 
     beforeEach('insert some questions', () => {
-      return db('questions').insert(questions);
+      return db('convos').insert(convos);
     });
 
     //relevant
     it('should update item when given valid data and an id', function() {
       const item = {
-        'title': 'American questionss'
+        'user_id': 1,
+        'id': 1,
+        'is_public': true
       };
 
       let doc;
-      return db('questions')
+      return db('convos')
         .first()
         .then(_doc => {
           doc = _doc;
           return supertest(app)
-            .patch(`/api/questions/${doc.id}`)
+            .patch(`/api/convos/${doc.id}`)
             .send(item)
             .expect(200);
         })
         .then(res => {
           expect(res.body).to.be.a('object');
-          expect(res.body).to.include.keys('id', 'title', 'completed');
-          expect(res.body.title).to.equal(item.title);
-          expect(res.body.completed).to.be.false;
+          expect(res.body).to.include.keys('user_id', 'id', 'is_public');
+          expect(res.body.user_id).to.equal(item.user_id);
+          expect(res.body.id).to.equal(item.id);
+          expect(res.body.is_public).to.be.true;
         });
     });
 
@@ -155,11 +160,11 @@ describe('convos API:', function() {
         foobar: 'broken item'
       };
 
-      return db('questions')
+      return db('convos')
         .first()
         .then(doc => {
           return supertest(app)
-            .patch(`/api/questions/${doc.id}`)
+            .patch(`/api/convos/${doc.id}`)
             .send(badItem)
             .expect(400);
         });
@@ -167,10 +172,10 @@ describe('convos API:', function() {
 
     it('should respond with a 404 for an invalid id', () => {
       const item = {
-        'title': 'Buy New Dishes'
+        'question': 'What is up?'
       };
       return supertest(app)
-        .patch('/api/questions/aaaaaaaaaaaaaaaaaaaaaaaa')
+        .patch('/api/convos/aaaaaaaaaaaaaaaaaaaaaaaa')
         .send(item)
         .expect(404);
     });
