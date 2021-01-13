@@ -82,11 +82,11 @@ convosRouter
 
     //validate the input
     for (const [key, value] of Object.entries(newConvos)) {
-      if (question == null) {
+      if (key == null) {
         //if there is an error show it
         return res.status(400).json({
           error: {
-            message: `Missing a question in request body`
+            message: `Missing a value in request body`
           }
         });
       }
