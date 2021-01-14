@@ -82,7 +82,7 @@ convosRouter
 
     //validate the input
     for (const [key, value] of Object.entries(newConvos)) {
-      if (key == null) {
+      if (value == null) {
         //if there is an error show it
         return res.status(400).json({
           error: {
